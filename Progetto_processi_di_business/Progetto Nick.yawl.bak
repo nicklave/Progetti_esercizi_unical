@@ -1,0 +1,931 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<specificationSet xmlns="http://www.yawlfoundation.org/yawlschema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.0" xsi:schemaLocation="http://www.yawlfoundation.org/yawlschema http://www.yawlfoundation.org/yawlschema/YAWL_Schema4.0.xsd">
+  <specification uri="Progetto_Nick">
+    <documentation>No description provided</documentation>
+    <metaData>
+      <creator>Marco</creator>
+      <description>No description provided</description>
+      <coverage>5.0.801</coverage>
+      <version>0.16</version>
+      <persistent>false</persistent>
+      <identifier>UID_2469190e-e759-4882-a59f-589d3795ce7c</identifier>
+    </metaData>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" />
+    <decomposition id="Net" isRootNet="true" xsi:type="NetFactsType">
+      <localVariable>
+        <index>0</index>
+        <name>HaTessera</name>
+        <type>boolean</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue>false</initialValue>
+      </localVariable>
+      <localVariable>
+        <index>1</index>
+        <name>TesseraValida</name>
+        <type>boolean</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue>false</initialValue>
+      </localVariable>
+      <localVariable>
+        <index>2</index>
+        <name>DatiAnagrafici</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue />
+      </localVariable>
+      <localVariable>
+        <index>3</index>
+        <name>CertificatoMedico</name>
+        <type>YDocumentType</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue />
+      </localVariable>
+      <localVariable>
+        <index>4</index>
+        <name>DurataAbbonamento</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue>0</initialValue>
+      </localVariable>
+      <localVariable>
+        <index>5</index>
+        <name>ImportoMensile</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue>0</initialValue>
+      </localVariable>
+      <localVariable>
+        <index>6</index>
+        <name>ValidazionePagamento</name>
+        <type>boolean</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue>false</initialValue>
+      </localVariable>
+      <localVariable>
+        <index>7</index>
+        <name>Contratto</name>
+        <type>YDocumentType</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue />
+      </localVariable>
+      <localVariable>
+        <index>8</index>
+        <name>ImportoTotale</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <initialValue>0</initialValue>
+      </localVariable>
+      <processControlElements>
+        <inputCondition id="InputCondition">
+          <flowsInto>
+            <nextElementRef id="_1-Verifica_tessera" />
+          </flowsInto>
+        </inputCondition>
+        <task id="_1-Verifica_tessera">
+          <name>1-Verifica tessera</name>
+          <flowsInto>
+            <nextElementRef id="_2-Scansione_tessera" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="_3-Proposta_abbonamento" />
+            <predicate ordering="0">/Net/HaTessera/text()='false'</predicate>
+          </flowsInto>
+          <join code="and" />
+          <split code="xor" />
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;HaTessera&gt;{/_1-Verifica_tessera/HaTessera/text()}&lt;/HaTessera&gt;" />
+              <mapsTo>HaTessera</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-655430fa-4d55-4715-8724-d1e163543d50</role>
+                </initialSet>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_1-Verifica_tessera" />
+        </task>
+        <task id="_2-Scansione_tessera">
+          <name>2-Scansione tessera</name>
+          <flowsInto>
+            <nextElementRef id="_6-SbloccoTornello" />
+            <predicate ordering="0">/Net/TesseraValida/text()='true'</predicate>
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="_5-Pagamento" />
+            <isDefaultFlow />
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;TesseraValida&gt;{/_2-Scansione_tessera/TesseraValida/text()}&lt;/TesseraValida&gt;" />
+              <mapsTo>TesseraValida</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-f0a251b5-8abf-49fc-adc5-5e4d89e66cd7</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Capacità di calcolo</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_2-Scansione_tessera" />
+        </task>
+        <task id="_3-Proposta_abbonamento">
+          <name>3-Proposta abbonamento</name>
+          <flowsInto>
+            <nextElementRef id="_4-Iscrizione" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;DurataAbbonamento&gt;{/_3-Proposta_abbonamento/DurataAbbonamento/text()}&lt;/DurataAbbonamento&gt;" />
+              <mapsTo>DurataAbbonamento</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-01b97e15-3ffe-42d0-9209-5e0f5add7959</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Capacità persuasive</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_3-Proposta_abbonamento" />
+        </task>
+        <task id="_4-Iscrizione">
+          <name>4-Iscrizione</name>
+          <flowsInto>
+            <nextElementRef id="_4.2-Controllo_certificato_medico" />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="_4.1-Inserimento_dati_anagrafici" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;ImportoMensile&gt;{/_4-Iscrizione/ImportoMensile/text()}&lt;/ImportoMensile&gt;" />
+              <mapsTo>ImportoMensile</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-01b97e15-3ffe-42d0-9209-5e0f5add7959</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Lingua inglese</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+              <familiarParticipant taskID="_3-Proposta_abbonamento" />
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_4-Iscrizione" />
+        </task>
+        <task id="_5-Pagamento">
+          <name>5-Pagamento</name>
+          <flowsInto>
+            <nextElementRef id="Stato_pagamento" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <startingMappings>
+            <mapping>
+              <expression query="&lt;DurataAbbonamento&gt;{/Net/DurataAbbonamento/text()}&lt;/DurataAbbonamento&gt;" />
+              <mapsTo>DurataAbbonamento</mapsTo>
+            </mapping>
+            <mapping>
+              <expression query="&lt;ImportoMensile&gt;{/Net/ImportoMensile/text()}&lt;/ImportoMensile&gt;" />
+              <mapsTo>ImportoMensile</mapsTo>
+            </mapping>
+          </startingMappings>
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;ImportoTotale&gt;{/_5-Pagamento/ImportoTotale/text()}&lt;/ImportoTotale&gt;" />
+              <mapsTo>ImportoTotale</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-406c9696-efca-4940-8e1f-82a93e67afec</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Capacità economiche</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_5-Pagamento" />
+        </task>
+        <task id="_6-SbloccoTornello">
+          <name>6-SbloccoTornello</name>
+          <flowsInto>
+            <nextElementRef id="OutputCondition" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-f0a251b5-8abf-49fc-adc5-5e4d89e66cd7</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Capacità di calcolo</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+              <familiarParticipant taskID="_2-Scansione_tessera" />
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_6-SbloccoTornello" />
+        </task>
+        <task id="Stato_pagamento">
+          <name>Stato pagamento</name>
+          <flowsInto>
+            <nextElementRef id="_5-Pagamento" />
+            <isDefaultFlow />
+          </flowsInto>
+          <flowsInto>
+            <nextElementRef id="_6-SbloccoTornello" />
+            <predicate ordering="0">/Net/ValidazionePagamento/text()='true'</predicate>
+          </flowsInto>
+          <join code="xor" />
+          <split code="xor" />
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;ValidazionePagamento&gt;{/Stato_pagamento/ValidazionePagamento/text()}&lt;/ValidazionePagamento&gt;" />
+              <mapsTo>ValidazionePagamento</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-406c9696-efca-4940-8e1f-82a93e67afec</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Capacità economiche</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="Stato_pagamento" />
+        </task>
+        <task id="_4.1-Inserimento_dati_anagrafici">
+          <name>4.1-Inserimento dati anagrafici</name>
+          <flowsInto>
+            <nextElementRef id="_4.3-Completamento" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;DatiAnagrafici&gt;{/_4.1-Inserimento_dati_anagrafici/DatiAnagrafici/text()}&lt;/DatiAnagrafici&gt;" />
+              <mapsTo>DatiAnagrafici</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-01b97e15-3ffe-42d0-9209-5e0f5add7959</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Lingua inglese</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+              <familiarParticipant taskID="_4-Iscrizione" />
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_4.1-Inserimento_dati_anagrafici" />
+        </task>
+        <task id="_4.2-Controllo_certificato_medico">
+          <name>4.2-Controllo certificato medico</name>
+          <flowsInto>
+            <nextElementRef id="_4.3-Completamento" />
+          </flowsInto>
+          <join code="xor" />
+          <split code="and" />
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;CertificatoMedico&gt;{/_4.2-Controllo_certificato_medico/CertificatoMedico/*}&lt;/CertificatoMedico&gt;" />
+              <mapsTo>CertificatoMedico</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-01b97e15-3ffe-42d0-9209-5e0f5add7959</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Lingua inglese</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+              <familiarParticipant taskID="_4-Iscrizione" />
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_4.2-Controllo_certificato_medico" />
+        </task>
+        <task id="_4.3-Completamento">
+          <name>4.3-Completamento</name>
+          <flowsInto>
+            <nextElementRef id="_5-Pagamento" />
+          </flowsInto>
+          <join code="and" />
+          <split code="and" />
+          <startingMappings>
+            <mapping>
+              <expression query="&lt;DatiAnagrafici&gt;{/Net/DatiAnagrafici/text()}&lt;/DatiAnagrafici&gt;" />
+              <mapsTo>DatiAnagrafici</mapsTo>
+            </mapping>
+            <mapping>
+              <expression query="&lt;DurataAbbonamento&gt;{/Net/DurataAbbonamento/text()}&lt;/DurataAbbonamento&gt;" />
+              <mapsTo>DurataAbbonamento</mapsTo>
+            </mapping>
+            <mapping>
+              <expression query="&lt;CertificatoMedico&gt;{/Net/CertificatoMedico/*}&lt;/CertificatoMedico&gt;" />
+              <mapsTo>CertificatoMedico</mapsTo>
+            </mapping>
+          </startingMappings>
+          <completedMappings>
+            <mapping>
+              <expression query="&lt;Contratto&gt;{/_4.3-Completamento/Contratto/*}&lt;/Contratto&gt;" />
+              <mapsTo>Contratto</mapsTo>
+            </mapping>
+          </completedMappings>
+          <resourcing>
+            <offer initiator="system">
+              <distributionSet>
+                <initialSet>
+                  <role>RO-01b97e15-3ffe-42d0-9209-5e0f5add7959</role>
+                </initialSet>
+                <filters>
+                  <filter>
+                    <name>CapabilityFilter</name>
+                    <params>
+                      <param>
+                        <key>Capability</key>
+                        <value>Lingua inglese</value>
+                      </param>
+                    </params>
+                  </filter>
+                </filters>
+              </distributionSet>
+              <familiarParticipant taskID="_4-Iscrizione" />
+            </offer>
+            <allocate initiator="user" />
+            <start initiator="user" />
+          </resourcing>
+          <decomposesTo id="_4.3-Completamento" />
+        </task>
+        <outputCondition id="OutputCondition" />
+      </processControlElements>
+    </decomposition>
+    <decomposition id="Stato_pagamento" xsi:type="WebServiceGatewayFactsType">
+      <name>Stato pagamento</name>
+      <outputParam>
+        <index>0</index>
+        <name>ValidazionePagamento</name>
+        <type>boolean</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_1-Verifica_tessera" xsi:type="WebServiceGatewayFactsType">
+      <name>1-Verifica tessera</name>
+      <outputParam>
+        <index>0</index>
+        <name>HaTessera</name>
+        <type>boolean</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_2-Scansione_tessera" xsi:type="WebServiceGatewayFactsType">
+      <name>2-Scansione tessera</name>
+      <outputParam>
+        <index>0</index>
+        <name>TesseraValida</name>
+        <type>boolean</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_3-Proposta_abbonamento" xsi:type="WebServiceGatewayFactsType">
+      <name>3-Proposta abbonamento</name>
+      <outputParam>
+        <index>0</index>
+        <name>DurataAbbonamento</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_4-Iscrizione" xsi:type="WebServiceGatewayFactsType">
+      <name>4-Iscrizione</name>
+      <outputParam>
+        <index>0</index>
+        <name>ImportoMensile</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_4.1-Inserimento_dati_anagrafici" xsi:type="WebServiceGatewayFactsType">
+      <name>4.1-Inserimento dati anagrafici</name>
+      <outputParam>
+        <index>0</index>
+        <name>DatiAnagrafici</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_4.2-Controllo_certificato_medico" xsi:type="WebServiceGatewayFactsType">
+      <name>4.2-Controllo certificato medico</name>
+      <outputParam>
+        <index>0</index>
+        <name>CertificatoMedico</name>
+        <type>YDocumentType</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_4.3-Completamento" xsi:type="WebServiceGatewayFactsType">
+      <name>4.3-Completamento</name>
+      <inputParam>
+        <index>0</index>
+        <name>CertificatoMedico</name>
+        <type>YDocumentType</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+      </inputParam>
+      <inputParam>
+        <index>1</index>
+        <name>DatiAnagrafici</name>
+        <type>string</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+      </inputParam>
+      <inputParam>
+        <index>3</index>
+        <name>DurataAbbonamento</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+      </inputParam>
+      <outputParam>
+        <index>2</index>
+        <name>Contratto</name>
+        <type>YDocumentType</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_5-Pagamento" xsi:type="WebServiceGatewayFactsType">
+      <name>5-Pagamento</name>
+      <inputParam>
+        <index>0</index>
+        <name>DurataAbbonamento</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+      </inputParam>
+      <inputParam>
+        <index>1</index>
+        <name>ImportoMensile</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+      </inputParam>
+      <outputParam>
+        <index>2</index>
+        <name>ImportoTotale</name>
+        <type>int</type>
+        <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+        <defaultValue />
+      </outputParam>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+    <decomposition id="_6-SbloccoTornello" xsi:type="WebServiceGatewayFactsType">
+      <name>6-SbloccoTornello</name>
+      <externalInteraction>manual</externalInteraction>
+    </decomposition>
+  </specification>
+  <layout>
+    <locale language="it" country="IT"/>
+    <specification id="Progetto_Nick">
+      <size w="58" h="28"/>
+      <net id="Net" bgColor="-723724">
+        <bounds x="-184" y="-75" w="1250" h="531"/>
+        <frame x="0" y="0" w="1048" h="444"/>
+        <viewport x="0" y="0" w="1048" h="444"/>
+        <scale>0.8353124999999911</scale>
+        <vertex id="OutputCondition">
+          <attributes>
+            <bounds x="1.440" y="284" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <vertex id="InputCondition">
+          <attributes>
+            <bounds x="24" y="280" w="32" h="32"/>
+          </attributes>
+        </vertex>
+        <container id="_2-Scansione_tessera">
+          <vertex>
+            <attributes>
+              <bounds x="792" y="160" w="32" h="32"/>
+              <backgroundColor>-16737997</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="764" y="192" w="97" h="41"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="823" y="160" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="_1-Verifica_tessera">
+          <vertex>
+            <attributes>
+              <bounds x="284" y="280" w="32" h="32"/>
+              <backgroundColor>-65332</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="256" y="312" w="97" h="41"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="315" y="280" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="_4.3-Completamento">
+          <vertex>
+            <attributes>
+              <bounds x="920" y="428" w="32" h="32"/>
+              <backgroundColor>-205</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="876" y="460" w="122" h="21"/>
+            </attributes>
+          </label>
+          <decorator type="AND_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="910" y="428" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="_5-Pagamento">
+          <vertex>
+            <attributes>
+              <bounds x="1.075" y="424" w="33" h="33"/>
+              <backgroundColor>-52429</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1.045" y="457" w="98" h="21"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_join">
+            <position>10</position>
+            <attributes>
+              <bounds x="1.075" y="414" w="33" h="12"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="_4-Iscrizione">
+          <vertex>
+            <attributes>
+              <bounds x="624" y="420" w="32" h="32"/>
+              <backgroundColor>-205</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="596" y="452" w="96" h="20"/>
+            </attributes>
+          </label>
+          <decorator type="AND_split">
+            <position>13</position>
+            <attributes>
+              <bounds x="655" y="420" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="Stato_pagamento">
+          <vertex>
+            <attributes>
+              <bounds x="1.180" y="436" w="32" h="32"/>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1.148" y="468" w="97" h="41"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_split">
+            <position>10</position>
+            <attributes>
+              <bounds x="1.180" y="426" w="32" h="11"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="_4.2-Controllo_certificato_medico">
+          <vertex>
+            <attributes>
+              <bounds x="772" y="520" w="32" h="32"/>
+              <backgroundColor>-205</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="740" y="552" w="96" h="60"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="_3-Proposta_abbonamento">
+          <vertex>
+            <attributes>
+              <bounds x="488" y="420" w="32" h="32"/>
+              <backgroundColor>-205</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="456" y="452" w="96" h="40"/>
+            </attributes>
+          </label>
+        </container>
+        <container id="_6-SbloccoTornello">
+          <vertex>
+            <attributes>
+              <bounds x="1.204" y="160" w="32" h="32"/>
+              <backgroundColor>-16738048</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="1.164" y="192" w="116" h="21"/>
+            </attributes>
+          </label>
+          <decorator type="XOR_join">
+            <position>12</position>
+            <attributes>
+              <bounds x="1.194" y="160" w="11" h="32"/>
+            </attributes>
+          </decorator>
+        </container>
+        <container id="_4.1-Inserimento_dati_anagrafici">
+          <vertex>
+            <attributes>
+              <bounds x="772" y="324" w="32" h="32"/>
+              <backgroundColor>-205</backgroundColor>
+            </attributes>
+          </vertex>
+          <label>
+            <attributes>
+              <bounds x="740" y="356" w="101" h="41"/>
+            </attributes>
+          </label>
+        </container>
+        <flow source="_1-Verifica_tessera" target="_2-Scansione_tessera">
+          <ports in="3" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="325" y="303,25"/>
+              <value x="372" y="176"/>
+              <value x="788" y="147,5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="Stato_pagamento" target="_6-SbloccoTornello">
+          <ports in="2" out="3"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1.191,5" y="362"/>
+              <value x="1.192" y="272"/>
+              <value x="1.190" y="155,25"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="_4.3-Completamento" target="_5-Pagamento">
+          <ports in="13" out="0"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="951" y="443,5"/>
+              <value x="1.068" y="423"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="_4.1-Inserimento_dati_anagrafici" target="_4.3-Completamento">
+          <ports in="13" out="1"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="_2-Scansione_tessera" target="_6-SbloccoTornello">
+          <ports in="2" out="2"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="_4.2-Controllo_certificato_medico" target="_4.3-Completamento">
+          <ports in="13" out="1"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="_4-Iscrizione" target="_4.2-Controllo_certificato_medico">
+          <ports in="3" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="_4-Iscrizione" target="_4.1-Inserimento_dati_anagrafici">
+          <ports in="2" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="_6-SbloccoTornello" target="OutputCondition">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="_2-Scansione_tessera" target="_5-Pagamento">
+          <ports in="2" out="1"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="829" y="147,5"/>
+              <value x="1.075,75" y="418"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="_3-Proposta_abbonamento" target="_4-Iscrizione">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="_1-Verifica_tessera" target="_3-Proposta_abbonamento">
+          <ports in="3" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="325" y="303,25"/>
+              <value x="372" y="436"/>
+              <value x="488" y="435,5"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="InputCondition" target="_1-Verifica_tessera">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+        <flow source="Stato_pagamento" target="_5-Pagamento">
+          <ports in="2" out="3"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+            <points>
+              <value x="1.191,5" y="418"/>
+              <value x="1.092" y="324"/>
+              <value x="1.091,25" y="418"/>
+            </points>
+          </attributes>
+        </flow>
+        <flow source="_5-Pagamento" target="Stato_pagamento">
+          <ports in="13" out="12"/>
+          <attributes>
+            <lineStyle>11</lineStyle>
+          </attributes>
+        </flow>
+      </net>
+    </specification>
+  </layout>
+</specificationSet>
